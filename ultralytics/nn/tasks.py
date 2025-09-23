@@ -18,9 +18,11 @@ from ultralytics.nn.modules import (
     C2PSA,
     C3,
     C3TR,
+    ECA,
     ELAN1,
     OBB,
     PSA,
+    SE,
     SPP,
     SPPELAN,
     SPPF,
@@ -30,6 +32,9 @@ from ultralytics.nn.modules import (
     Bottleneck,
     BottleneckCSP,
     C2f,
+    C2f_CA,
+    C2f_ECA,
+    C2f_SE,
     C2fAttn,
     C2fCIB,
     C2fPSA,
@@ -43,6 +48,7 @@ from ultralytics.nn.modules import (
     Conv,
     Conv2,
     ConvTranspose,
+    CoordAtt,
     Detect,
     DWConv,
     DWConvTranspose2d,
@@ -68,7 +74,6 @@ from ultralytics.nn.modules import (
     YOLOEDetect,
     YOLOESegment,
     v10Detect,
-SE,ECA,CoordAtt,C2f_CA, C2f_SE, C2f_ECA
 )
 from ultralytics.utils import DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, YAML, colorstr, emojis
 from ultralytics.utils.checks import check_requirements, check_suffix, check_yaml
@@ -1645,7 +1650,9 @@ def parse_model(d, ch, verbose=True):
             SCDown,
             C2fCIB,
             A2C2f,
-            C2f_CA, C2f_SE, C2f_ECA
+            C2f_CA,
+            C2f_SE,
+            C2f_ECA,
         }
     )
     repeat_modules = frozenset(  # modules with 'repeat' arguments
@@ -1665,7 +1672,9 @@ def parse_model(d, ch, verbose=True):
             C2fCIB,
             C2PSA,
             A2C2f,
-            C2f_CA, C2f_SE, C2f_ECA
+            C2f_CA,
+            C2f_SE,
+            C2f_ECA,
         }
     )
     for i, (f, n, m, args) in enumerate(d["backbone"] + d["head"]):  # from, number, module, args
@@ -1715,7 +1724,7 @@ def parse_model(d, ch, verbose=True):
             c2 = args[1] if args[3] else args[1] * 4
         elif m is torch.nn.BatchNorm2d:
             args = [ch[f]]
-##################################################
+        ##################################################
         elif m in [SE]:
             c1 = ch[f]
             args = [c1, *args[0:]]
@@ -1726,7 +1735,7 @@ def parse_model(d, ch, verbose=True):
             args = [c1, c2, *args[1:]]
         elif m in [ECA]:
             args = [*args[:]]
-#################
+        #################
         elif m is Concat:
             c2 = sum(ch[x] for x in f)
         elif m in frozenset(
@@ -1786,9 +1795,8 @@ def yaml_model_load(path):
     yaml_file = check_yaml(unified_path, hard=False) or check_yaml(path)
     d = YAML.load(yaml_file)  # model dict
 
-    if not d.get("scale",None):
+    if not d.get("scale", None):
         d["scale"] = guess_model_scale(path)
-
 
     d["yaml_file"] = str(path)
     return d
