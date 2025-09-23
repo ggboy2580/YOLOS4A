@@ -1,14 +1,12 @@
-from ultralytics import YOLO
-import os
 from pathlib import Path
 
-if __name__ == '__main__':
-# Load a model
-#     model = YOLO(r"D:\Models\yolo11n.pt")
-#     model = YOLO(r"D:\codes\ultralytics-main\ultralytics\cfg\models\11\myyolo11.yaml")
+from ultralytics import YOLO
+
+if __name__ == "__main__":
+    # Load a model
+    #     model = YOLO(r"D:\Models\yolo11n.pt")
+    #     model = YOLO(r"D:\codes\ultralytics-main\ultralytics\cfg\models\11\myyolo11.yaml")
     model = YOLO(r"D:\codes\ultralytics-main\ultralytics\cfg\models\v3\yolov3.yaml")
-
-
 
     print(model)
 
@@ -40,7 +38,7 @@ if __name__ == '__main__':
     #                 with open(str(f).replace(f'{os.sep}annotations{os.sep}', f'{os.sep}labels{os.sep}'), 'w') as fl:
     #                     fl.writelines(lines)  # write label.txt
 
-    dir=r"D:\Datas\VisDrone"
+    dir = r"D:\Data\VisDrone"
     dir = Path(dir)
     train_results = model.train(
         data=r"D:\codes\ultralytics-main\myVisDrone.yaml",  # path to dataset YAML
@@ -48,7 +46,7 @@ if __name__ == '__main__':
         imgsz=640,  # training image size
         device="cuda",  # device to run on, i.e. device=0 or device=0,1,2,3 or device=cpu
         amp=False,
-# amp=True,
+        # amp=True,
     )
 
     # Evaluate model performance on the validation set
@@ -60,5 +58,3 @@ if __name__ == '__main__':
 
     # Export the model to ONNX format
     path = model.export(format="onnx")  # return path to exported model
-
-

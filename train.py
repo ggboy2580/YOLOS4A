@@ -1,19 +1,21 @@
 from ultralytics import YOLO
+
 # import wandb
-if __name__ == '__main__':
+if __name__ == "__main__":
     # 加载模型
     # model = YOLO(r'yolov8.yaml')  # 不使用预训练权重训练
     # model = YOLO(r'yolov8-c2f-SE.yaml').load("yolov8n.pt")  # 使用预训练权重训练  模型文件放在 ultralytics/cfg/models/v8文件夹下   权重放在主目录下与train.py同目录
     # model = YOLO(r"/home/ubuntu/yolo/ultralytics-main/yolov8-SMALL-4head-SE-CA-ECA_63mAP/coco/weights/best.pt")# 继续训练，传入之前的权重
 
-    model = YOLO(r"D:\codes\ultralytics-main\ultralytics\cfg\models\S4A\yolov8-SMALL-4head-SE-CA-ECA.yaml")# 继续训练，传入之前的权重
-
+    model = YOLO(
+        r"D:\codes\ultralytics-main\ultralytics\cfg\models\S4A\yolov8-SMALL-4head-SE-CA-ECA.yaml"
+    )  # 继续训练，传入之前的权重
 
     # wandb.login(key='028f9f195bab80e6fda264c15906dbdc578e5fe3') # 不用的话注释掉
 
     # 训练参数 ----------------------------------------------------------------------------------------------
     model.train(
-        data=r'C:\Users\gaoge\Desktop\小目标识别\ultralytics-main (副本)\ultralytics\cfg\datasets\VisDrone.yaml',  #文件放在ultralytics/cfg/datasets
+        data=r"C:\Users\gaoge\Desktop\小目标识别\ultralytics-main (副本)\ultralytics\cfg\datasets\VisDrone.yaml",  # 文件放在ultralytics/cfg/datasets
         # data=r'coco.yaml',  #文件放在ultralytics/cfg/datasets
         epochs=300,  # (int) 训练的周期数
         patience=50,  # (int) 等待无明显改善以进行早期停止的周期数
@@ -24,11 +26,11 @@ if __name__ == '__main__':
         cache=True,  # (bool) True/ram、磁盘或False。使用缓存加载数据
         device=0,  # (int | str | list, optional) 运行的设备，例如 cuda device=0 或 device=0,1,2,3 或 device=cpu
         workers=8,  # (int) 数据加载的工作线程数（每个DDP进程）
-        project='yolov8-SMALL-4head-SE-CA-ECA',  # (str, optional) 项目名称
-        name='coco',  # (str, optional) 实验名称，结果保存在'project/name'目录下
+        project="yolov8-SMALL-4head-SE-CA-ECA",  # (str, optional) 项目名称
+        name="coco",  # (str, optional) 实验名称，结果保存在'project/name'目录下
         exist_ok=False,  # (bool) 是否覆盖现有实验
         pretrained=True,  # (bool | str) 是否使用预训练模型（bool），或从中加载权重的模型（str）
-        optimizer='SGD',  # (str) 要使用的优化器，选择=[SGD，Adam，Adamax，AdamW，NAdam，RAdam，RMSProp，auto]
+        optimizer="SGD",  # (str) 要使用的优化器，选择=[SGD，Adam，Adamax，AdamW，NAdam，RAdam，RMSProp，auto]
         verbose=True,  # (bool) 是否打印详细输出
         seed=42,  # (int) 用于可重复性的随机种子
         deterministic=True,  # (bool) 是否启用确定性模式
@@ -75,4 +77,3 @@ if __name__ == '__main__':
         mixup=0.0,  # (float) 图像混合（概率）
         copy_paste=0.0,  # (float) 分割复制-粘贴（概率）
     )
-
