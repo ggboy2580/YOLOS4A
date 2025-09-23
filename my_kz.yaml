@@ -1,0 +1,8 @@
+
+path: D:\Datas\mykz_yolo
+train: train # train images (relative to 'path')  6471 images
+val: dev # val images (relative to 'path')  548 images
+test: test # test images (optional)  1610 images
+names:
+  0: kz
+  1: wkz
