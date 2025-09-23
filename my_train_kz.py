@@ -1,10 +1,8 @@
 from ultralytics import YOLO
-import os
-from pathlib import Path
 
-if __name__ == '__main__':
-# Load a model
-#     model = YOLO(r"D:\Models\yolo11n.pt")
+if __name__ == "__main__":
+    # Load a model
+    #     model = YOLO(r"D:\Models\yolo11n.pt")
     model = YOLO(r"D:\codes\ultralytics-main\ultralytics\cfg\models\11\myyolo11.yaml")
     print(model)
 
@@ -26,7 +24,3 @@ if __name__ == '__main__':
 
     # Export the model to ONNX format
     path = model.export(format="onnx")  # return path to exported model
-
-
-
-
