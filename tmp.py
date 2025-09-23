@@ -1,9 +1,10 @@
-import cv2
-import numpy as np
-from ultralytics import YOLO
 import os
+
+import cv2
 import matplotlib.pyplot as plt
-from pathlib import Path
+import numpy as np
+
+from ultralytics import YOLO
 
 # 设置中文显示
 plt.rcParams["font.family"] = ["SimHei"]
@@ -11,7 +12,7 @@ plt.rcParams["font.family"] = ["SimHei"]
 
 def visualize_segmentation(results, save_path=None):
     """
-    可视化YOLO分割结果
+    可视化YOLO分割结果.
 
     参数:
         results: YOLO模型的预测结果
@@ -29,8 +30,7 @@ def visualize_segmentation(results, save_path=None):
         if result.masks is not None:
             # 获取掩码和类别
             masks = result.masks.data.cpu().numpy()
-            cls = result.boxes.cls.cpu().numpy().astype(int)
-            names = result.names
+            result.boxes.cls.cpu().numpy().astype(int)
 
             # 为每个掩码生成随机颜色
             colors = np.random.randint(0, 255, size=(len(masks), 3), dtype=np.uint8)
@@ -63,8 +63,7 @@ def visualize_segmentation(results, save_path=None):
 
                 # 绘制类别和置信度标签
                 label = f"{class_name}: {conf:.2f}"
-                cv2.putText(visualized_img, label, (x1, y1 - 10),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+                cv2.putText(visualized_img, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
         # 转换颜色空间（OpenCV默认BGR，Matplotlib需要RGB）
         visualized_img_rgb = cv2.cvtColor(visualized_img, cv2.COLOR_BGR2RGB)
@@ -72,8 +71,8 @@ def visualize_segmentation(results, save_path=None):
         # 显示结果
         plt.figure(figsize=(10, 8))
         plt.imshow(visualized_img_rgb)
-        plt.axis('off')
-        plt.title('YOLO分割结果')
+        plt.axis("off")
+        plt.title("YOLO分割结果")
         plt.show()
 
         # 保存结果
@@ -86,7 +85,7 @@ def visualize_segmentation(results, save_path=None):
             print(f"结果已保存至: {save_path}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # 加载模型 - 可以是配置文件或预训练权重文件
     # 注意：如果使用.yaml配置文件，需要确保已经训练过或指定了预训练权重
     MODEL_PATH = r"C:\Users\gaoge\Downloads\yolo11l-seg.pt"
@@ -105,7 +104,7 @@ if __name__ == '__main__':
     # 遍历图像目录
     for root, dirs, files in os.walk(PIC_DIR):
         for file in files:
-            if file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp')):
+            if file.lower().endswith((".png", ".jpg", ".jpeg", ".bmp")):
                 pic_path = os.path.join(root, file)
                 print(f"处理图像: {pic_path}")
 
@@ -118,4 +117,3 @@ if __name__ == '__main__':
 
                 # 可视化并保存结果
                 visualize_segmentation(results, save_path)
-                

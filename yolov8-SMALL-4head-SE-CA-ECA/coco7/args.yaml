@@ -10,7 +10,7 @@ imgsz: 320
 save: true
 save_period: -1
 cache: true
-device: '0'
+device: "0"
 workers: 8
 project: yolov8-SMALL-4head-SE-CA-ECA
 name: coco7
