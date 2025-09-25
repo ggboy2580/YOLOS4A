@@ -43,7 +43,7 @@ if __name__ == '__main__':
     dir=r"D:\Datas\VisDrone"
     dir = Path(dir)
     train_results = model.train(
-        data=r"D:\codes\ultralytics-main\myVisDrone.yaml",  # path to dataset YAML
+        data=r"D:\codes\YOLOS4A\ultralytics\cfg\datasets\myVisDrone.yaml",  # path to dataset YAML
         epochs=100,  # number of training epochs
         imgsz=640,  # training image size
         device="cuda",  # device to run on, i.e. device=0 or device=0,1,2,3 or device=cpu
