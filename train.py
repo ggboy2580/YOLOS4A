@@ -6,14 +6,14 @@ if __name__ == '__main__':
     # model = YOLO(r'yolov8-c2f-SE.yaml').load("yolov8n.pt")  # 使用预训练权重训练  模型文件放在 ultralytics/cfg/models/v8文件夹下   权重放在主目录下与train.py同目录
     # model = YOLO(r"/home/ubuntu/yolo/ultralytics-main/yolov8-SMALL-4head-SE-CA-ECA_63mAP/coco/weights/best.pt")# 继续训练，传入之前的权重
 
-    model = YOLO(r"D:\codes\ultralytics-main\ultralytics\cfg\models\S4A\yolov8-SMALL-4head-SE-CA-ECA.yaml")# 继续训练，传入之前的权重
+    model = YOLO(r"D:\codes\YOLOS4A\ultralytics\cfg\models\S4A\yolov8-SMALL-4head-SE-CA-ECA.yaml")# 继续训练，传入之前的权重
 
 
     # wandb.login(key='028f9f195bab80e6fda264c15906dbdc578e5fe3') # 不用的话注释掉
 
     # 训练参数 ----------------------------------------------------------------------------------------------
     model.train(
-        data=r'C:\Users\gaoge\Desktop\小目标识别\ultralytics-main (副本)\ultralytics\cfg\datasets\VisDrone.yaml',  #文件放在ultralytics/cfg/datasets
+        data=r"D:\Datas\CODrone\CODrone.yaml",  #文件放在ultralytics/cfg/datasets
         # data=r'coco.yaml',  #文件放在ultralytics/cfg/datasets
         epochs=300,  # (int) 训练的周期数
         patience=50,  # (int) 等待无明显改善以进行早期停止的周期数

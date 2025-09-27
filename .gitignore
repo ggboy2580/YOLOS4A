@@ -177,3 +177,4 @@ calibration_*.npy
 
 runs/
 yolov8-SMALL-4head-SE-CA-ECA/
+yolos4al.wts

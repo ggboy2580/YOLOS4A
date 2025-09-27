@@ -15,11 +15,11 @@ if __name__ == "__main__":
     num_params = sum(p.numel() for p in model.model.parameters()) / 1e6
 
     # 2. 设置数据集路径
-    data_yaml = r"D:\codes\YOLOS4A\myVisDrone.yaml"
+    data_yaml = r"D:\Datas\CODrone\CODrone.yaml"
 
     # 3. 开始验证并计时
     start = time.time()
-    metrics = model.val(data=data_yaml, split="val",save_json=True)  # split="val" 指定验证集
+    metrics = model.val(data=data_yaml, split="test",save_json=True)  # split="val" 指定验证集
     elapsed = time.time() - start
 
     # 4. 提取关键指标
