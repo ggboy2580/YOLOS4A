@@ -6,26 +6,26 @@ if __name__ == '__main__':
     # model = YOLO(r'yolov8-c2f-SE.yaml').load("yolov8n.pt")  # 使用预训练权重训练  模型文件放在 ultralytics/cfg/models/v8文件夹下   权重放在主目录下与train.py同目录
     # model = YOLO(r"/home/ubuntu/yolo/ultralytics-main/yolov8-SMALL-4head-SE-CA-ECA_63mAP/coco/weights/best.pt")# 继续训练，传入之前的权重
 
-    model = YOLO(r"D:\codes\YOLOS4A\ultralytics\cfg\models\S4A\yolov8-SMALL-4head-SE-CA-ECA.yaml")# 继续训练，传入之前的权重
+    model = YOLO(r"D:\codes\YOLOS4A\ultralytics\cfg\models\S4A\yolov8.yaml")# 继续训练，传入之前的权重
 
 
     # wandb.login(key='028f9f195bab80e6fda264c15906dbdc578e5fe3') # 不用的话注释掉
 
     # 训练参数 ----------------------------------------------------------------------------------------------
     model.train(
-        data=r"D:\Datas\CODrone\CODrone.yaml",  #文件放在ultralytics/cfg/datasets
+        data=r"D:\codes\YOLOS4A\myVisDrone.yaml",  #文件放在ultralytics/cfg/datasets
         # data=r'coco.yaml',  #文件放在ultralytics/cfg/datasets
         epochs=300,  # (int) 训练的周期数
         patience=50,  # (int) 等待无明显改善以进行早期停止的周期数
         batch=-1,  # (int) 每批次的图像数量（-1 为自动批处理）
-        imgsz=320,  # (int) 输入图像的大小，整数或w，h
+        imgsz=640,  # (int) 输入图像的大小，整数或w，h
         save=True,  # (bool) 保存训练检查点和预测结果
         save_period=-1,  # (int) 每x周期保存检查点（如果小于1则禁用）
         cache=True,  # (bool) True/ram、磁盘或False。使用缓存加载数据
         device=0,  # (int | str | list, optional) 运行的设备，例如 cuda device=0 或 device=0,1,2,3 或 device=cpu
         workers=8,  # (int) 数据加载的工作线程数（每个DDP进程）
         project='yolov8-SMALL-4head-SE-CA-ECA',  # (str, optional) 项目名称
-        name='coco',  # (str, optional) 实验名称，结果保存在'project/name'目录下
+        name='yolov8n',  # (str, optional) 实验名称，结果保存在'project/name'目录下
         exist_ok=False,  # (bool) 是否覆盖现有实验
         pretrained=True,  # (bool | str) 是否使用预训练模型（bool），或从中加载权重的模型（str）
         optimizer='SGD',  # (str) 要使用的优化器，选择=[SGD，Adam，Adamax，AdamW，NAdam，RAdam，RMSProp，auto]
