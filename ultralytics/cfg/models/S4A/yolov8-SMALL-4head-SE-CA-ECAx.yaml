@@ -1,0 +1,76 @@
+# Ultralytics YOLO 🚀, AGPL-3.0 license
+# A YOLOv8 4-head model with small channel widths + triple “innovation blocks” (SE, CA, ECA).
+# Target param: ~5-10 million
+# Suitable for small-object detection (has P2, P3, P4, P5 outputs).
+
+################################################################
+# PARAMETERS
+################################################################
+nc: 10  # number of classes
+
+# Optional: Remove or comment out scales: if you want to freeze channels exactly
+scales:
+#   n: [0.33, 0.25, 1024]
+#   s: [0.33, 0.50, 1024]
+#   m: [0.67, 0.75, 768]
+   l: [1.00, 1.00, 512]
+#   x: [1.00, 1.25, 512]
+
+################################################################
+# BACKBONE
+################################################################
+# We do 4 stages: P2, P3, P4, P5
+# Each stage uses a different "C2f_*" block (SE, CA, ECA).
+# Channels are moderate to keep total param ~5–10M.
+
+backbone:
+  # [from, repeats, module, args]
+
+  # 0) Down to P2
+  - [ -1, 1, Conv, [32, 3, 2] ]          # 0-P1/2 => [B,32,H/2,W/2]
+  - [ -1, 1, Conv, [64, 3, 2] ]          # 1-P2/4 => [B,64,H/4,W/4]
+  - [ -1, 2, C2f_SE, [64, True] ]        # 2 => small SE block (2 repeats)
+
+  # 3) Down to P3
+  - [ -1, 1, Conv, [128, 3, 2] ]         # 3-P3/8 => [B,128,H/8,W/8]
+  - [ -1, 3, C2f_CA, [128, True] ]       # 4 => CA-based block for mid-ch
+
+  # 5) Down to P4
+  - [ -1, 1, Conv, [256, 3, 2] ]         # 5-P4/16 => [B,256,H/16,W/16]
+  - [ -1, 3, C2f_ECA, [256, True] ]      # 6 => ECA-based block
+
+  # 7) Down to P5
+  - [ -1, 1, Conv, [512, 3, 2] ]         # 7-P5/32 => [B,512,H/32,W/32]
+  - [ -1, 2, C2f_SE, [512, True] ]       # 8 => (reuse SE or whichever block you prefer)
+
+  # 9) SPPF final
+  - [ -1, 1, SPPF, [512, 5] ]            # 9 => [B,512,H/32,W/32] (P5)
+
+################################################################
+# HEAD (4-Head => P2, P3, P4, P5)
+################################################################
+head:
+  # 10) Upsample from P5 => P4 scale
+  - [ -1, 1, nn.Upsample, [None, 2, 'nearest'] ]
+  # 11) Concat with P4 (line 6 => 256ch)
+  - [ [ -1, 6 ], 1, Concat, [1] ]         # => [512+256=768,H/16,W/16]
+  # 12) C2f => reduce e.g. 256
+  - [ -1, 3, C2f, [256] ]
+
+  # 13) Upsample => P3 scale
+  - [ -1, 1, nn.Upsample, [None, 2, 'nearest'] ]
+  # 14) Concat with P3 (line 4 => 128ch)
+  - [ [ -1, 4 ], 1, Concat, [1] ]         # => [256+128=384,H/8,W/8]
+  # 15) C2f => reduce e.g. 192
+  - [ -1, 3, C2f, [192] ]                # (P3)
+
+  # 16) Upsample => P2 scale
+  - [ -1, 1, nn.Upsample, [None, 2, 'nearest'] ]
+  # 17) Concat with P2 (line 2 => 64ch)
+  - [ [ -1, 2 ], 1, Concat, [1] ]         # => [192+64=256,H/4,W/4]
+  # 18) C2f => reduce e.g. 128
+  - [ -1, 3, C2f, [128] ]                # (P2)
+
+  # 19) 4-scale detection: [18=P2, 15=P3, 12=P4, 9=P5]
+  - [ [18, 15, 12, 9], 1, Detect, [nc] ]
+
