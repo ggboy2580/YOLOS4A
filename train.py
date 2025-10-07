@@ -6,7 +6,7 @@ if __name__ == '__main__':
     # model = YOLO(r'yolov8-c2f-SE.yaml').load("yolov8n.pt")  # 使用预训练权重训练  模型文件放在 ultralytics/cfg/models/v8文件夹下   权重放在主目录下与train.py同目录
     # model = YOLO(r"/home/ubuntu/yolo/ultralytics-main/yolov8-SMALL-4head-SE-CA-ECA_63mAP/coco/weights/best.pt")# 继续训练，传入之前的权重
 
-    model = YOLO(r"D:\codes\YOLOS4A\ultralytics\cfg\models\S4A\yolov8-SMALL-4head-SE-CA-ECAx.yaml")# 继续训练，传入之前的权重
+    model = YOLO(r"D:\codes\YOLOS4A\ultralytics\cfg\models\v9\yolov9t.yaml")# 继续训练，传入之前的权重
 
 
     # wandb.login(key='028f9f195bab80e6fda264c15906dbdc578e5fe3') # 不用的话注释掉
@@ -25,7 +25,7 @@ if __name__ == '__main__':
         device=0,  # (int | str | list, optional) 运行的设备，例如 cuda device=0 或 device=0,1,2,3 或 device=cpu
         workers=8,  # (int) 数据加载的工作线程数（每个DDP进程）
         project='yolov8-SMALL-4head-SE-CA-ECA',  # (str, optional) 项目名称
-        name='yolov8n',  # (str, optional) 实验名称，结果保存在'project/name'目录下
+        name='VisDrone_yolov9t',  # (str, optional) 实验名称，结果保存在'project/name'目录下
         exist_ok=False,  # (bool) 是否覆盖现有实验
         pretrained=True,  # (bool | str) 是否使用预训练模型（bool），或从中加载权重的模型（str）
         optimizer='SGD',  # (str) 要使用的优化器，选择=[SGD，Adam，Adamax，AdamW，NAdam，RAdam，RMSProp，auto]
